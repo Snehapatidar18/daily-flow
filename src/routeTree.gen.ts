@@ -10,19 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/app'
-import { Route as AppRouteRouteImport } from './routes/app.route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppTrackingRouteImport } from './routes/app.tracking'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppCustomersRouteImport } from './routes/app.customers'
 import { Route as AppBillingRouteImport } from './routes/app.billing'
 
 const AppRoute = AppRouteImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppRouteRoute = AppRouteRouteImport.update({
   id: '/app',
   path: '/app',
   getParentRoute: () => rootRouteImport,
@@ -35,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTrackingRoute = AppTrackingRouteImport.update({
+  id: '/tracking',
+  path: '/tracking',
   getParentRoute: () => AppRoute,
 } as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
@@ -59,14 +59,16 @@ export interface FileRoutesByFullPath {
   '/app/billing': typeof AppBillingRoute
   '/app/customers': typeof AppCustomersRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/tracking': typeof AppTrackingRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app': typeof AppIndexRoute
   '/app/billing': typeof AppBillingRoute
   '/app/customers': typeof AppCustomersRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/tracking': typeof AppTrackingRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -75,6 +77,7 @@ export interface FileRoutesById {
   '/app/billing': typeof AppBillingRoute
   '/app/customers': typeof AppCustomersRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/tracking': typeof AppTrackingRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -85,9 +88,16 @@ export interface FileRouteTypes {
     | '/app/billing'
     | '/app/customers'
     | '/app/settings'
+    | '/app/tracking'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/app/billing' | '/app/customers' | '/app/settings'
+  to:
+    | '/'
+    | '/app/billing'
+    | '/app/customers'
+    | '/app/settings'
+    | '/app/tracking'
+    | '/app'
   id:
     | '__root__'
     | '/'
@@ -95,12 +105,12 @@ export interface FileRouteTypes {
     | '/app/billing'
     | '/app/customers'
     | '/app/settings'
+    | '/app/tracking'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRouteRoute: typeof AppRouteRoute
   AppRoute: typeof AppRouteWithChildren
 }
 
@@ -111,13 +121,6 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -132,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/tracking': {
+      id: '/app/tracking'
+      path: '/tracking'
+      fullPath: '/app/tracking'
+      preLoaderRoute: typeof AppTrackingRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/settings': {
@@ -162,6 +172,7 @@ interface AppRouteChildren {
   AppBillingRoute: typeof AppBillingRoute
   AppCustomersRoute: typeof AppCustomersRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  AppTrackingRoute: typeof AppTrackingRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -169,6 +180,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppBillingRoute: AppBillingRoute,
   AppCustomersRoute: AppCustomersRoute,
   AppSettingsRoute: AppSettingsRoute,
+  AppTrackingRoute: AppTrackingRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
@@ -176,7 +188,6 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRouteRoute: AppRouteRoute,
   AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport

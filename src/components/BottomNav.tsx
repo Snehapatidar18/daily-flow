@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const items = [
   { to: "/app", label: "Home", icon: LayoutDashboard },
   { to: "/app/customers", label: "Customers", icon: Users },
-  { to: "/app/route", label: "Route", icon: RouteIcon },
+  { to: "/app/tracking", label: "Route", icon: RouteIcon },
   { to: "/app/billing", label: "Billing", icon: Receipt },
   { to: "/app/settings", label: "Settings", icon: Settings },
 ] as const;

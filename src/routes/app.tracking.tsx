@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Navigation, X, CheckCircle2, Phone } from "lucide-react";
 
-export const Route = createFileRoute("/app")({
+export const Route = createFileRoute("/app/tracking")({
   component: RoutePage,
 });
 
